@@ -77,8 +77,6 @@ class SubTensors:
                     y_predicts.append(y_predict)  # [simple_length - 1, 1701]
                 scope.reuse_variables()
         self.losses = [tf.reduce_mean(losses)]
-        # self.precise = self.get_precise(y_predicts)
-        # self.predict = tf.transpose(y_predicts, [1, 0])  # [batch_size - 1, 1700]
 
         # 预测网络
         self.predict_x = tf.placeholder(tf.int64, [config.gene_length], name="predict_x")  # [1701]
@@ -111,46 +109,19 @@ class GeneApp(fm.App):
     def __init__(self, config: GeneConfig):
         super().__init__(config)
 
-    # def after_epoch(self, epoch):
-    #     super(GeneApp, self).after_epoch(epoch)
-        # fd = self.get_feed_dict(self.config.get_ds_train())
-        # precise = self.session.run(self.ts.sub_ts[-1].precise, fd)
-        # print('Epoch %d: precise = %.6f' % (epoch, precise))
-
     def test(self, ds_test):
-
         ds = self.config.ds
-        datas = ds.next_batch(1)[0]
-        # x = datas[0]
-        # y = datas[1]
         ts = self.ts.sub_ts[-1]
-        # state = self.session.run(ts.zero_state, {ts.predict_x: x})
-        # y_predict, _ = self.session.run([ts.yi_predicts, ts.next_state], {ts.predict_x: x, ts.state: state})
-        # y_predict = ds.to_gene(*y_predict)
-        # print("predict : {y}".format(y=y_predict))
 
-        # x = datas[0]
         x = ds.dic["JF500448"]
+
         state = self.session.run(ts.zero_state, {ts.predict_x: x})
-        # for i in range(len(datas) - 1):
-        for i in range(1):
-            y_predict, state = self.session.run([ts.yi_predicts, ts.next_state], {ts.predict_x: x, ts.state: state})
-            x = datas[i + 1]
+        y_predict, state = self.session.run([ts.yi_predicts, ts.next_state], {ts.predict_x: x, ts.state: state})
         y_pre = ds.to_gene(*y_predict)
-        y = ds.to_gene(*datas[-1])
         print("x : {x}".format(x=ds.to_gene(*x)))
         print("predict : {y}".format(y=y_pre))
-        e_count = 0
-        for yi, pi in zip(y, y_pre):
-            if yi == pi:
-                e_count += 1
-        print("precise : {p}".format(p=(e_count/len(y))))
-        # precise = np.mean(np.cast(np.equal(y, y_pre)))
-        # print("precise : {p}".format(p=precise))
 
 
 if __name__ == '__main__':
     config = GeneConfig()
     config.call("test")
-    # ds = config.get_ds_train().next_batch(1)[0]
-    # print(ds)

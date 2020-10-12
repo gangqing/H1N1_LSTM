@@ -70,7 +70,7 @@ class Config:
         self.call(arg.call)
 
     def call(self, name):
-        if name == "data":
+        if name == "train":
             self.train()
         elif name == "test":
             self.test()
