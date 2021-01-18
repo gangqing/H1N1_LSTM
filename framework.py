@@ -61,7 +61,7 @@ class Config:
             else:
                 parser.add_argument("--{attr}".format(attr=attr), type=type(value), default=value, help="default to %s" % value)
 
-        parser.add_argument("--call", type=str, default="data", help="call method, by default call data()")
+        parser.add_argument("--call", type=str, default="train", help="call method, by default call data()")
         arg = parser.parse_args()
         for attr in attrs:
             if hasattr(arg, attr):

@@ -124,4 +124,4 @@ class GeneApp(fm.App):
 
 if __name__ == '__main__':
     config = GeneConfig()
-    config.call("test")
+    config.call("train")
