@@ -1,6 +1,6 @@
 from tensorflow.compat import v1 as tf
-from H1N1.GeneData import Data
-import H1N1.framework as fm
+from H1N1_LSTM.GeneData import Data
+import H1N1_LSTM.framework as fm
 
 
 class GeneConfig(fm.Config):
