@@ -7,13 +7,18 @@ class Data:
         self.dna = []
         self.simples = []  # [3, -1, 1701]
         self.dic = {}
-        self.read_file(config.iran_2009_2010_path)
-        # self.read_txt(config.guam_2009_txt_path)
+        # self.read_file(config.iran_2009_2010_path)
+        self.read_txt(config.guam_2009_txt_path)
         print("simple count : {count}".format(count=len(self.simples)))
         # self.pos = np.random.randint(0, self.num_examples)
         self.pos = 0
 
     def read_file(self, path):
+        """
+        读取fasta文件
+        :param path:
+        :return:
+        """
         with open(path) as file:
             lines = file.readlines()
         new_line = []
@@ -37,6 +42,11 @@ class Data:
         self.simples.append(data)
 
     def read_txt(self, path):
+        """
+        读取txt文件
+        :param path:
+        :return:
+        """
         with open(path) as file:
             lines = file.readlines()
         data = []
@@ -65,6 +75,9 @@ class Data:
             datas.extend(self.simples[: next_pos])
         self.pos = next_pos
         return datas
+
+    def get_simples(self):
+        return self.simples
 
     def read_gene(self, gene):
         for dna in gene:
